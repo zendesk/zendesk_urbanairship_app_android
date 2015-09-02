@@ -7,6 +7,7 @@ import com.zendesk.sdk.deeplinking.ZendeskDeepLinking;
 import com.zendesk.sdk.network.impl.ZendeskConfig;
 import com.zendesk.util.StringUtils;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -31,7 +32,24 @@ public class IntentReceiver extends BaseIntentReceiver {
 
     @Override
     protected void onPushReceived(Context context, PushMessage message, int notificationId) {
-        // Intentionally empty
+
+        // Extract ticket id
+        final String tid = message.getPushBundle().getString("tid");
+
+        // Check if ticket id is valid
+        if(!StringUtils.hasLength(tid)){
+            Logger.e(LOG_TAG, String.format(Locale.US, "No valid ticket id found: '%s'", tid));
+            return;
+        }
+
+        // Try to refresh the comment stream if visible
+        final boolean refreshed = ZendeskDeepLinking.INSTANCE.refreshComments(tid);
+
+        // If stream was successfully refreshed, we can cancel the notification
+        if(refreshed){
+            final NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            nm.cancel(notificationId);
+        }
     }
 
     @Override
@@ -70,7 +88,7 @@ public class IntentReceiver extends BaseIntentReceiver {
 
         // Check if Intent is valid
         if(zendeskDeepLinkIntent == null){
-            Logger.e(LOG_TAG, String.format(Locale.US, "Error zendeskDeepLinkIntent is 'null'"));
+            Logger.e(LOG_TAG, "Error zendeskDeepLinkIntent is 'null'");
             return false;
         }
 
