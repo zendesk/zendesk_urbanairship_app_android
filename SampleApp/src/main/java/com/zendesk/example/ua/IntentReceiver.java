@@ -115,10 +115,8 @@ public class IntentReceiver extends BaseIntentReceiver {
         final Intent mainActivity = new Intent(context, MainActivity.class);
         final ArrayList<Intent> backStack = new ArrayList<>(Arrays.asList(mainActivity));
 
-        final Intent requestIntent = ZendeskDeepLinking.INSTANCE.getRequestIntent(
+        return ZendeskDeepLinking.INSTANCE.getRequestIntent(
                 context, ticketId, null, backStack, mainActivity
         );
-
-        return requestIntent;
     }
 }
