@@ -1,1 +1,1 @@
-include ':SampleApp', ':urbanairship-lib-6.0.1'
+include ':SampleApp'

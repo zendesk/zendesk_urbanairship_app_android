@@ -147,7 +147,7 @@ public class MainActivity extends FragmentActivity {
         findViewById(R.id.main_btn_push_register).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ZendeskConfig.INSTANCE.enablePush(devicePushToken.getText().toString(), new ZendeskCallback<PushRegistrationResponse>() {
+                ZendeskConfig.INSTANCE.enablePushWithUAChannelId(devicePushToken.getText().toString(), new ZendeskCallback<PushRegistrationResponse>() {
                     @Override
                     public void onSuccess(PushRegistrationResponse result) {
                         Toast.makeText(getApplicationContext(), "Registration success", Toast.LENGTH_SHORT).show();
@@ -178,7 +178,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        
+
         /*
             The channelId could be null on initial app start:
 
