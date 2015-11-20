@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentActivity;
 
 import com.zendesk.sdk.R;
 import com.zendesk.sdk.feedback.impl.BaseZendeskFeedbackConfiguration;
-import com.zendesk.sdk.feedback.impl.SubmissionListenerAdapter;
+import com.zendesk.sdk.network.SubmissionListenerAdapter;
 import com.zendesk.sdk.rating.ui.RateMyAppDialog;
 
 import java.io.Serializable;

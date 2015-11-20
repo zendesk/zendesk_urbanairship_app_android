@@ -11,8 +11,9 @@ import android.widget.Toast;
 import com.zendesk.logger.Logger;
 import com.zendesk.sdk.feedback.impl.BaseZendeskFeedbackConfiguration;
 import com.zendesk.sdk.feedback.ui.ContactZendeskActivity;
-import com.zendesk.sdk.model.network.Identity;
-import com.zendesk.sdk.model.network.PushRegistrationResponse;
+import com.zendesk.sdk.model.access.AnonymousIdentity;
+import com.zendesk.sdk.model.access.Identity;
+import com.zendesk.sdk.model.push.PushRegistrationResponse;
 import com.zendesk.sdk.network.impl.ZendeskConfig;
 import com.zendesk.sdk.requests.RequestActivity;
 import com.zendesk.sdk.support.SupportActivity;
@@ -125,20 +126,22 @@ public class MainActivity extends FragmentActivity {
                     labelsArray = labels.split(",");
                 }
 
+                SupportActivity.Builder builder = new SupportActivity.Builder();
+
                 if (labelsArray != null) {
+                    if(labelsArray.length == 1 && labelsArray[0].matches("-?\\d+")){
+                        builder.listSections(Long.parseLong(labelsArray[0]));
 
-                    if (labelsArray.length == 1 && labelsArray[0].matches("-?\\d+")) {
-                        SupportActivity.startActivity(MainActivity.this, Long.parseLong(labelsArray[0]));
-
-                    } else {
-                        SupportActivity.startActivity(MainActivity.this, labelsArray);
+                    }else{
+                        builder.listArticlesByLabels(labelsArray);
 
                     }
 
                 } else {
-                    Intent intent = new Intent(MainActivity.this, SupportActivity.class);
-                    startActivity(intent);
+                    builder.listCategories();
                 }
+
+                builder.show(MainActivity.this);
             }
         });
 
