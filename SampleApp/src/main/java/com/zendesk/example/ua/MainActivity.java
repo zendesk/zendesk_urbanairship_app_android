@@ -8,25 +8,23 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.urbanairship.UAirship;
+import com.urbanairship.google.PlayServicesUtils;
 import com.zendesk.logger.Logger;
 import com.zendesk.sdk.feedback.impl.BaseZendeskFeedbackConfiguration;
 import com.zendesk.sdk.feedback.ui.ContactZendeskActivity;
-import com.zendesk.sdk.model.access.AnonymousIdentity;
 import com.zendesk.sdk.model.access.Identity;
 import com.zendesk.sdk.model.push.PushRegistrationResponse;
 import com.zendesk.sdk.network.impl.ZendeskConfig;
 import com.zendesk.sdk.requests.RequestActivity;
 import com.zendesk.sdk.support.SupportActivity;
+import com.zendesk.service.ErrorResponse;
+import com.zendesk.service.ZendeskCallback;
+import com.zendesk.util.StringUtils;
 
 import java.util.Locale;
 
 import retrofit.client.Response;
-
-import com.urbanairship.UAirship;
-import com.urbanairship.google.PlayServicesUtils;
-import com.zendesk.service.ErrorResponse;
-import com.zendesk.service.ZendeskCallback;
-import com.zendesk.util.StringUtils;
 
 /**
  * This activity is a springboard that you can use to launch various parts of the Zendesk SDK.
@@ -60,14 +58,6 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Initialises the SDK
-        ZendeskConfig.INSTANCE.init(
-                this,
-                getString(R.string.zd_url),
-                getString(R.string.zd_appid),
-                getString(R.string.zd_oauth)
-        );
 
         final Identity zendeskIdentity = getZendeskIdentity();
         if(zendeskIdentity == null){
