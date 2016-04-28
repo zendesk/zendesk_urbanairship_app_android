@@ -2,7 +2,6 @@ package com.zendesk.example.ua;
 
 import android.app.Application;
 
-import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
 import com.urbanairship.push.notifications.DefaultNotificationFactory;
 import com.zendesk.logger.Logger;
@@ -29,11 +28,8 @@ public class Global extends Application{
 
     private void initUrbanAirship() {
 
-        // Load Urban Airship configuration from 'airshipconfig.properties'
-        final AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(this);
-
         // Initialize Urban Airship
-        UAirship.takeOff(this, options);
+        UAirship.takeOff(this);
 
         // Enable push notification
         UAirship.shared().getPushManager().setUserNotificationsEnabled(true);
@@ -42,7 +38,6 @@ public class Global extends Application{
         final DefaultNotificationFactory defaultNotificationFactory = new DefaultNotificationFactory(getApplicationContext());
         defaultNotificationFactory.setSmallIconId(R.drawable.ic_conversations);
         UAirship.shared().getPushManager().setNotificationFactory(defaultNotificationFactory);
-
     }
 
 }
