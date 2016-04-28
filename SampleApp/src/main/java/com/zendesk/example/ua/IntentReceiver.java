@@ -1,16 +1,16 @@
 package com.zendesk.example.ua;
 
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.Nullable;
+
 import com.urbanairship.push.BaseIntentReceiver;
 import com.urbanairship.push.PushMessage;
 import com.zendesk.logger.Logger;
 import com.zendesk.sdk.deeplinking.ZendeskDeepLinking;
 import com.zendesk.sdk.network.impl.ZendeskConfig;
 import com.zendesk.util.StringUtils;
-
-import android.app.NotificationManager;
-import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -4,13 +4,11 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import com.zendesk.sdk.R;
-import com.zendesk.sdk.feedback.impl.BaseZendeskFeedbackConfiguration;
+import com.zendesk.sdk.feedback.BaseZendeskFeedbackConfiguration;
 import com.zendesk.sdk.network.SubmissionListenerAdapter;
 import com.zendesk.sdk.rating.ui.RateMyAppDialog;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This activity demonstrates the RateMyApp dialog.
@@ -37,7 +35,12 @@ public class RateMyAppDialogTest extends FragmentActivity implements Serializabl
                 .withAndroidStoreRatingButton()
 
                 // Adds a button. When tapped opens a dialog to send feedback.
-                .withSendFeedbackButton(new SampleFeedbackConfiguration(), new ReshowFeedbackListener())
+                .withSendFeedbackButton(new BaseZendeskFeedbackConfiguration() {
+                    @Override
+                    public String getRequestSubject() {
+                        return "RMA";
+                    }
+                }, new ReshowFeedbackListener())
 
                 // Adds a button. When tapped dismisses the dialog and sets a flag to not show it again
                 .withDontRemindMeAgainButton()
@@ -59,24 +62,5 @@ public class RateMyAppDialogTest extends FragmentActivity implements Serializabl
                 mRateMyAppDialog.show(RateMyAppDialogTest.this, true);
             }
         }
-    }
-}
-
-/**
- * This class configures the {@link com.zendesk.sdk.rating.impl.RateMyAppSendFeedbackButton} to
- * connect with your instance of Zendesk.
- */
-class SampleFeedbackConfiguration extends BaseZendeskFeedbackConfiguration {
-
-    @Override
-    public List<String> getTags() {
-        return new ArrayList<String>() {{
-            add("tag1");
-        }};
-    }
-
-    @Override
-    public String getRequestSubject() {
-        return "Subject";
     }
 }

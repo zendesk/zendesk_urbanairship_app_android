@@ -1,6 +1,5 @@
 package com.zendesk.example.ua;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -11,7 +10,6 @@ import android.widget.Toast;
 import com.urbanairship.UAirship;
 import com.urbanairship.google.PlayServicesUtils;
 import com.zendesk.logger.Logger;
-import com.zendesk.sdk.feedback.impl.BaseZendeskFeedbackConfiguration;
 import com.zendesk.sdk.feedback.ui.ContactZendeskActivity;
 import com.zendesk.sdk.model.access.Identity;
 import com.zendesk.sdk.model.push.PushRegistrationResponse;
@@ -23,8 +21,6 @@ import com.zendesk.service.ZendeskCallback;
 import com.zendesk.util.StringUtils;
 
 import java.util.Locale;
-
-import retrofit.client.Response;
 
 /**
  * This activity is a springboard that you can use to launch various parts of the Zendesk SDK.
@@ -49,7 +45,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if (PlayServicesUtils.isGooglePlayStoreAvailable()) {
+        if (PlayServicesUtils.isGooglePlayStoreAvailable(this)) {
             PlayServicesUtils.handleAnyPlayServicesError(this);
         }
     }
@@ -66,9 +62,6 @@ public class MainActivity extends FragmentActivity {
             );
         }
         ZendeskConfig.INSTANCE.setIdentity(getZendeskIdentity());
-
-        //Setting Configuration for contact component
-        ZendeskConfig.INSTANCE.setContactConfiguration(new SampleContactConfiguration(this));
 
         /**
          * This will make the RateMyApp dialog activity.
@@ -157,9 +150,9 @@ public class MainActivity extends FragmentActivity {
         findViewById(R.id.main_btn_push_unregister).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ZendeskConfig.INSTANCE.disablePush(devicePushToken.getText().toString(), new ZendeskCallback<Response>() {
+                ZendeskConfig.INSTANCE.disablePush(devicePushToken.getText().toString(), new ZendeskCallback<Void>() {
                     @Override
-                    public void onSuccess(Response result) {
+                    public void onSuccess(Void result) {
                         Toast.makeText(getApplicationContext(), "Deregistration success", Toast.LENGTH_SHORT).show();
                     }
 
@@ -187,29 +180,5 @@ public class MainActivity extends FragmentActivity {
         final String channelId = UAirship.shared().getPushManager().getChannelId();
         Logger.d(LOG_TAG, String.format(Locale.US, "Urban Airship - Channel Id %s", channelId));
         ((EditText) findViewById(R.id.main_edittext_push)).setText(channelId);
-    }
-}
-
-/**
- * This class will configure the feedback dialog with the minimum amount of options that
- * are required.intent
- */
-class SampleContactConfiguration extends BaseZendeskFeedbackConfiguration {
-
-    public final transient Context mContext;
-
-    public SampleContactConfiguration(Context context) {
-        this.mContext = context;
-    }
-
-    @Override
-    public String getRequestSubject() {
-
-        /**
-         * A request will normally have a shorter subject and a longer description. Here we are
-         * specifying the subject that will be on the request that is created by the feedback
-         * dialog.
-         */
-        return mContext.getString(R.string.rate_my_app_dialog_feedback_request_subject);
     }
 }
