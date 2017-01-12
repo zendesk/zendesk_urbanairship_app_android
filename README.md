@@ -13,7 +13,3 @@ Pull requests are welcome.
     2. Update the method `MainAcitivty#getZendeskIdentity()` with your desired authentication type.
   4. Add your Urban Airship details:
     1. Update `assets/airshipconfig.properties`
-
-### Licence:
-
-By downloading or accessing this software, You agree to the Zendesk Terms of Service (https://www.zendesk.com/company/terms) and Application Developer and API License Agreement (https://www.zendesk.com/company/application-developer-and-api-license-agreement) and acknowledge that such terms govern Your use of and access to the software.
