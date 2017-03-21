@@ -18,7 +18,6 @@ import com.zendesk.sdk.requests.RequestActivity;
 import com.zendesk.sdk.support.SupportActivity;
 import com.zendesk.service.ErrorResponse;
 import com.zendesk.service.ZendeskCallback;
-import com.zendesk.util.StringUtils;
 
 import java.util.Locale;
 
@@ -55,24 +54,6 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Identity zendeskIdentity = getZendeskIdentity();
-        if(zendeskIdentity == null){
-            throw new RuntimeException(
-                    "No valid identity configured. Please update 'MainActivity#getZendeskIdentity()'."
-            );
-        }
-        ZendeskConfig.INSTANCE.setIdentity(getZendeskIdentity());
-
-        /**
-         * This will make the RateMyApp dialog activity.
-         */
-        findViewById(R.id.main_btn_rate_my_app).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, RateMyAppDialogTest.class));
-            }
-        });
-
         /**
          * This will make a full-screen feedback screen appear. It is very similar to how
          * the feedback dialog works but it is hosted in an activity.
@@ -96,35 +77,10 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        final EditText supportEdittext = (EditText) findViewById(R.id.main_edittext_support);
-
         findViewById(R.id.main_btn_support).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String labels = supportEdittext.getText().toString();
-                String[] labelsArray = null;
-
-                if (StringUtils.hasLength(labels)) {
-                    labelsArray = labels.split(",");
-                }
-
-                SupportActivity.Builder builder = new SupportActivity.Builder();
-
-                if (labelsArray != null) {
-                    if(labelsArray.length == 1 && labelsArray[0].matches("-?\\d+")){
-                        builder.listSections(Long.parseLong(labelsArray[0]));
-
-                    }else{
-                        builder.listArticlesByLabels(labelsArray);
-
-                    }
-
-                } else {
-                    builder.listCategories();
-                }
-
-                builder.show(MainActivity.this);
+                new SupportActivity.Builder().show(MainActivity.this);
             }
         });
 
