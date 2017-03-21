@@ -34,9 +34,9 @@ public class Global extends Application{
         // Enable push notification
         UAirship.shared().getPushManager().setUserNotificationsEnabled(true);
 
-        // 'ic_conversations' should be displayed as notification icon
+        // 'ic_chat_bubble_outline_black_24dp' should be displayed as notification icon
         final DefaultNotificationFactory defaultNotificationFactory = new DefaultNotificationFactory(getApplicationContext());
-        defaultNotificationFactory.setSmallIconId(R.drawable.ic_conversations);
+        defaultNotificationFactory.setSmallIconId(R.drawable.ic_chat_bubble_outline_black_24dp);
         UAirship.shared().getPushManager().setNotificationFactory(defaultNotificationFactory);
     }
 

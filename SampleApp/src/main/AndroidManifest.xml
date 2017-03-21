@@ -33,11 +33,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".RateMyAppDialogTest"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_rate_my_app_dialogue_test" />
-
         <!--
         ========================
         Urban Airship - Receiver

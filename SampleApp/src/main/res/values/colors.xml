@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="zendesk_color_primary">#2196F3</color>
+    <color name="zendesk_color_primary_dark">#1976D2</color>
+    <color name="zendesk_color_accent">#FFC107</color>
+
     <color name="zendesk_grey_text">#434343</color>
     <color name="zendesk_light_background">#f1f1f1</color>
     <color name="zendesk_text_hint">#ababab</color>

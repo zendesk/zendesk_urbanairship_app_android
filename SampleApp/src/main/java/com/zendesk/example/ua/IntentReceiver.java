@@ -3,9 +3,10 @@ package com.zendesk.example.ua;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.urbanairship.push.BaseIntentReceiver;
+import com.urbanairship.AirshipReceiver;
 import com.urbanairship.push.PushMessage;
 import com.zendesk.logger.Logger;
 import com.zendesk.sdk.deeplinking.ZendeskDeepLinking;
@@ -16,24 +17,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class IntentReceiver extends BaseIntentReceiver {
+public class IntentReceiver extends AirshipReceiver {
 
     private final static String LOG_TAG = IntentReceiver.class.getSimpleName();
 
     @Override
-    protected void onChannelRegistrationSucceeded(Context context, String channelId) {
-        // Intentionally empty
-    }
+    protected void onNotificationPosted(@NonNull Context context, @NonNull NotificationInfo notificationInfo) {
 
-    @Override
-    protected void onChannelRegistrationFailed(Context context) {
-        // Intentionally empty
-    }
+        PushMessage message = notificationInfo.getMessage();
 
-    @Override
-    protected void onPushReceived(Context context, PushMessage message, int notificationId) {
-
-        // Extract ticket id
         final String tid = message.getPushBundle().getString("tid");
 
         // Check if ticket id is valid
@@ -48,32 +40,17 @@ public class IntentReceiver extends BaseIntentReceiver {
         // If stream was successfully refreshed, we can cancel the notification
         if(refreshed){
             final NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.cancel(notificationId);
+            nm.cancel(notificationInfo.getNotificationId());
         }
+
     }
 
     @Override
-    protected void onBackgroundPushReceived(Context context, PushMessage message) {
-        // Intentionally empty
-    }
+    protected boolean onNotificationOpened(@NonNull Context context, @NonNull NotificationInfo notificationInfo) {
+        // Return false here to allow Urban Airship to auto launch the launcher activity
 
-    @Override
-    protected boolean onNotificationActionOpened(Context context, PushMessage message, int notificationId, String buttonId, boolean isForeground) {
-        // Intentionally empty
-        // Return false to let UA handle launching the launch activity
-        return false;
-    }
-
-    @Override
-    protected void onNotificationDismissed(Context context, PushMessage message, int notificationId) {
-        // Intentionally empty
-    }
-
-    @Override
-    protected boolean onNotificationOpened(Context context, PushMessage message, int notificationId) {
-
-        // Extract ticket id
-        final String tid = message.getPushBundle().getString("tid");
+                // Extract ticket id
+        final String tid = notificationInfo.getMessage().getPushBundle().getString("tid");
 
         // Check if ticket id is valid
         if(!StringUtils.hasLength(tid)){
